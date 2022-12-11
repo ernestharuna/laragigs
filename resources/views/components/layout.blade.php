@@ -34,7 +34,7 @@
             </li>
             <li>
                 <a href="login.html" class="hover:text-laravel"><i
-                        class="fa-solid fa-arrow-right-to-bracket"></i>Login</a>
+                    class="fa-solid fa-arrow-right-to-bracket"></i>Login</a>
             </li>
         </ul>
     </nav>
@@ -44,9 +44,10 @@
     <footer
         class="fixed bottom-0 left-0 w-full flex items-center justify-start font-bold bg-laravel text-white h-24 mt-24 opacity-90 md:justify-center">
         <p class="ml-2">Copyright &copy; 2022, All Rights reserved</p>
-
-        <a href="" class="absolute top-1/3 right-10 bg-black text-white py-2 px-5">Post Job</a>
+        
+        <a href="/listings/create" class="absolute top-1/3 right-10 bg-black text-white py-2 px-5">Post Job</a>
     </footer>
+    <x-flash-message></x-flash-message>
 </body>
 
 </html>
