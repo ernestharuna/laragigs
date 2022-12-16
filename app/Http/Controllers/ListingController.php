@@ -13,7 +13,7 @@ class ListingController extends Controller
     public function index()
     {
         return view('listings.index', [
-            'listings' => Listing::latest()->filter(request(['tag', 'search']))->get()
+            'listings' => Listing::latest()->filter(request(['tag', 'search']))->paginate(4)
         ]);
     }
 
@@ -31,6 +31,7 @@ class ListingController extends Controller
         ]);
     }
 
+    // Store new listing 
     public function store(Request $request)
     {
         $formFields = $request->validate([
@@ -44,7 +45,7 @@ class ListingController extends Controller
         ]);
 
         Listing::create($formFields);
-
-        return redirect('/')->with('message', 'Listing created successfully!');
+        
+        return redirect('/')->with('message', 'Listing created successfully!'); //flashes a pieces of data to the sesion.
     }
 }
