@@ -35,7 +35,6 @@ class ListingController extends Controller
     // Store new listing 
     public function store(Request $request)
     {
-        // dd($request->file('logo'));
         $formFields = $request->validate([
             'title' => 'required',
             'company' => ['required', Rule::unique('listings', 'company')],
@@ -50,19 +49,26 @@ class ListingController extends Controller
             $formFields['logo'] = $request->file('logo')->store('logos', 'public');
         }
 
-        Listing::create($formFields);
+        $request->user()->listings()->create($formFields);
+
+        // $formFields['user_id'] = auth()->id();
+        // Listing::create($formFields);
 
         return redirect('/')->with('message', 'Listing created successfully!'); //flashes a pieces of data to the sesion.
     }
 
     // Show edit form
-    public function edit (Listing $listing){
+    public function edit(Listing $listing)
+    {
         return view('listings.edit', ['listing' => $listing]);
     }
 
     // Update listings data
     public function update(Request $request, Listing $listing)
     {
+        if($listing->user_id != auth()->id()){
+            abort(403, "Unauthorized action!");
+        }
         // dd($request->file('logo'));
         $formFields = $request->validate([
             'title' => 'required',
@@ -84,8 +90,19 @@ class ListingController extends Controller
     }
 
     // Delete 
-    public function delete(Listing $listing) {
+    public function delete(Listing $listing)
+    {
+        if($listing->user_id != auth()->id()){
+            abort(403, "Unauthorized action!");
+        }
         $listing->delete();
         return redirect('/')->with('message', 'Listing deleted successfully!');
+    }
+
+    public function manage()
+    {
+        return view('listings.manage', [
+            'listings' => auth()->user()->listings
+        ]);
     }
 }
